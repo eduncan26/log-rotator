@@ -1,0 +1,34 @@
+{
+  "name": "log-rotator",
+  "version": "0.1.0",
+  "description": "Rotate log files",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/eduncan26/log-rotator.git"
+  },
+  "keywords": [
+    "Express",
+    "Morgan",
+    "Log",
+    "Rotator"
+  ],
+  "author": "Evan Duncan <evan.e.duncan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eduncan26/log-rotator/issues"
+  },
+  "homepage": "https://github.com/eduncan26/log-rotator#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-mocha": "^2.2.0",
+    "moment": "^2.11.1",
+    "should": "^8.1.1"
+  },
+  "dependencies": {
+    "lodash": "^4.0.0"
+  }
+}
