@@ -7,17 +7,24 @@ var moment = require('moment');
 var testDir = path.join(__dirname, '..', '/.tmp');
 
 describe('Log Rotator', function () {
+	before(function (done) {
+		fs.mkdir(testDir, function (err) {
+			if (err && err.code !== 'EEXIST') {
+				console.log('Something went wrong!!!');
+				console.error(err);
+				process.exit(1);
+			}
+			done();
+		});
+	});
+
 	afterEach(function () {
 		LogRotator.directory = null;
 		LogRotator.expires = null;
+		LogRotator.file_extension = '.log';
 	});
 
 	context('#stream()', function () {
-		it('should return a stream', function () {
-			LogRotator.directory = testDir;
-			LogRotator.stream().should.be.instanceOf(fs.WriteStream);
-		});
-
 		it('should return an error if an output directory is not provided', function () {
 			LogRotator.stream.should.throw();
 			try {
@@ -31,6 +38,22 @@ describe('Log Rotator', function () {
 		it('should extend optional arguments', function () {
 			LogRotator.stream({ foo: 'bar', directory: testDir, expires: '24h'});
 			LogRotator.foo.should.equal('bar');
+		});
+
+		it('should not return an error if a directory is set', function () {
+			LogRotator.directory = testDir;
+			LogRotator.stream().should.be.instanceOf(fs.WriteStream)
+		});
+
+		it('should return undefined if the target directory does not exist', function () {
+			LogRotator.directory = '/some/dir';
+			(LogRotator.stream() === undefined).should.be.true();
+		});
+
+		it('should not have an extension if file_extension null', function () {
+			LogRotator.file_extension = null;
+			LogRotator.directory = testDir;
+			LogRotator.stream().path.should.equal(testDir + '/' + LogRotator.last_date_str);
 		});
 	});
 

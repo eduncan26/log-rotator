@@ -4,7 +4,7 @@
   "description": "Rotate log files",
   "main": "index.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test:coverage"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/eduncan26/log-rotator#readme",
   "devDependencies": {
     "gulp": "^3.9.0",
+    "gulp-istanbul": "^0.10.3",
     "gulp-mocha": "^2.2.0",
     "moment": "^2.11.1",
     "should": "^8.1.1"
