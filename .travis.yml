@@ -1,10 +1,18 @@
 language: node_js
 node_js:
-  - "v5"
-  - "v4"
-  - "0.12"
-  - "0.10"
+- v5
+- v4
+- '0.12'
+- '0.10'
 env:
-  - NODE_ENV=ci
+- NODE_ENV=ci
 before_script:
-  - npm install -g gulp
+- npm install -g gulp
+deploy:
+  provider: npm
+  email: evan.e.duncan@gmail.com
+  api_key:
+    secure: EL/TAUxIS4RsTKU6rkFAFSJW+XtdZTIz2aQ0eRIFPkNSGsoAEJsbpoFdqq9RioNpRX2RHomQxz7Ml6os3MOhtyn4TgSUWY1dxn6K30urxaKBkhXnxHByKU0sEOcFa66n7qIy3MfpB9PLb+q8cih2527neVVOnj3EBEh9AikHVKXLiDFb9c9JgGzmtd7Z/YojrWtWmjuoTU+sNAYXgtn/z1aMxCk2NtgnBgNnONfVxBrijjGtyS1sJd6NXg1NNLf4LvI2x2PTBHUNhaYICFFBDPRXH7WfFLR81tbh2wEeI2YkgP/9zFynOGjIgOqUzc7osjCc/RRftJPXHyjOJjrTcRJi/chqgFsQbCVUhSZO2x0/ZY6pv3hfQmGI5v03BGX41zBLk74OyNiLRuPaEmNPTjyGht7r6z2gaaH8o0PMH0pzqq+tdlFLIxwLuMiR6qJTdta6LGaP5bi8njvVj3hWtoG0wtZ05i+0zX1ljov+U6TD6UTw0z6YFC6l+/3coVI2ZSLdpiwQcyAgukG8wxVZJFbN5l7yPOTfWqxTwYXlbv0S2KqjKkig1YelbDGeHWGSBODmFJfHzqi25FKxzcYdQXF5915PeVgYupLmS0YkfCEc8ALJUFuSQeWVFu7c5p3sR2UbDWTfICUMCy/VFZkl/WEN9Wno/AEDBII+fgnPzPo=
+  on:
+    branch: master
+    tags: true

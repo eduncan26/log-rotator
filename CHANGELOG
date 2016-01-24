@@ -1,3 +1,7 @@
+1.1.0
+  * Fix GH-4
+  * Configure travis to deploy builds
+
 1.0.0
   * Rotate log files by a user defined TTL
   * Move project out of 'beta' and consider it ready

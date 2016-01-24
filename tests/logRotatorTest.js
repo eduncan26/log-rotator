@@ -50,9 +50,16 @@ describe('Log Rotator', function () {
 			LogRotator.stream().should.be.instanceOf(fs.WriteStream)
 		});
 
-		it('should return undefined if the target directory does not exist', function () {
+		it('should return an error if the target directory does not exist', function () {
 			LogRotator.directory = '/some/dir';
-			(LogRotator.stream() === undefined).should.be.true();
+
+			LogRotator.stream.should.throw();
+			try {
+				LogRotator.stream();
+				(true).should.be.false();
+			} catch (err) {
+				err.message.should.equal('Target log directory does not exist! We\'re not going to create the directory for you.');
+			}
 		});
 
 		it('should not have an extension if file_extension null', function () {
