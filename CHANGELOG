@@ -1,3 +1,7 @@
+1.0.0
+  * Rotate log files by a user defined TTL
+  * Move project out of 'beta' and consider it ready
+
 0.1.2
   * Document the API
 
