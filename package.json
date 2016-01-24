@@ -1,7 +1,7 @@
 {
   "name": "log-rotator",
   "version": "0.1.2",
-  "description": "Rotate log files",
+  "description": "Easily rotate log files the way you want to",
   "main": "index.js",
   "scripts": {
     "test": "gulp test:coverage"
@@ -11,9 +11,9 @@
     "url": "git+ssh://git@github.com/eduncan26/log-rotator.git"
   },
   "keywords": [
-    "Express",
-    "Morgan",
     "Log",
+    "File",
+    "Rotate",
     "Rotator"
   ],
   "author": "Evan Duncan <evan.e.duncan@gmail.com>",

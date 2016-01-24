@@ -70,6 +70,22 @@ Set the default file_extension. Defaults to 'log'
 logRotator.file_extension = 'node_log';
 ```
 
+### LogRotator.ttl
+Set the default time to live. Defaults to 24h.
+
+Possible intervals are weeks (w), days (d), hours (h). Interval supports both the plural and singular nouns as well as the abbreviated version.
+
+```javascript
+logRotator.ttl = '1w';
+logRotator.ttl = '30 days';
+logRotator.ttl = '24hours';
+
+// Also works as singular
+logRotator.ttl = '1 week';
+logRotator.ttl = '1 day';
+logRotator.ttl = '1 hour';
+```
+
 ## Releases
 
 See [CHANGELOG](https://github.com/eduncan26/log-rotator/blob/master/CHANGELOG)
