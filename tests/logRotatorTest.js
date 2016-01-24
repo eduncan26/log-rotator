@@ -5,6 +5,7 @@ var fs = require('fs');
 var moment = require('moment');
 
 var testDir = path.join(__dirname, '..', '/.tmp');
+var dateFmt = 'YYYYMMDD';
 
 describe('Log Rotator', function () {
 	before(function (done) {
@@ -21,11 +22,16 @@ describe('Log Rotator', function () {
 	afterEach(function () {
 		LogRotator.directory = null;
 		LogRotator.expires = null;
-		LogRotator.file_extension = '.log';
+		LogRotator.file_extension = 'log';
 	});
 
 	context('#stream()', function () {
+		beforeEach(function () {
+			LogRotator.directory = testDir
+		});
+
 		it('should return an error if an output directory is not provided', function () {
+			LogRotator.directory = null;
 			LogRotator.stream.should.throw();
 			try {
 				LogRotator.stream();
@@ -41,7 +47,6 @@ describe('Log Rotator', function () {
 		});
 
 		it('should not return an error if a directory is set', function () {
-			LogRotator.directory = testDir;
 			LogRotator.stream().should.be.instanceOf(fs.WriteStream)
 		});
 
@@ -52,8 +57,26 @@ describe('Log Rotator', function () {
 
 		it('should not have an extension if file_extension null', function () {
 			LogRotator.file_extension = null;
-			LogRotator.directory = testDir;
 			LogRotator.stream().path.should.equal(testDir + '/' + LogRotator.last_date_str);
+		});
+
+		it('should not create a new file every time it is invoked', function () {
+			var s1 = LogRotator.stream();
+			var s2 = LogRotator.stream();
+			s1.path.should.equal(s2.path);
+		});
+
+		it('should throw an error if the ttl is not recognized', function () {
+			LogRotator.ttl = '30 seconds';
+
+			try {
+				LogRotator.stream();
+				(true).should.be.false();
+			} catch (err) {
+				err.message.should.equal('Interval is invalid. The ttl must be of weeks, days, or hours');
+				// Reset
+				LogRotator.ttl = '24h';
+			}
 		});
 	});
 
@@ -81,22 +104,28 @@ describe('Log Rotator', function () {
 	});
 
 	context('#hasStreamExpired()', function () {
-		it('should return true if the dates are over 24 hours apart', function () {
-			LogRotator.last_date_str = '2015-01-01-01:01';
-			LogRotator.hasStreamExpired().should.be.true();
-		});
+		var tests = [
+			{ assertion: true, duration: '24h', gt_lt: 'gt', date: moment().subtract(24, 'hours').format(dateFmt) },
+			{ assertion: true, duration: '7 days', gt_lt: 'gt', date: moment().subtract(7, 'days').format(dateFmt) },
+			{ assertion: true, duration: '1week', gt_lt: 'gt', date: moment().subtract(1, 'week').format(dateFmt) },
+			{ assertion: false, duration: '24h', gt_lt: 'lt', date: moment().format(dateFmt) },
+			{ assertion: false, duration: '7 days', gt_lt: 'lt', date: moment().format(dateFmt) },
+			{ assertion: false, duration: '1week', gt_lt: 'lt', date: moment().format(dateFmt) }
+		];
 
-		it('should return false if the dates are less that 24 hours apart', function () {
-			LogRotator.last_date_str = moment().format('YYYY-MM-DD-hh:mm');
-			LogRotator.hasStreamExpired().should.be.false();
+		tests.forEach(function (test) {
+			it('should return ' + test.assertion + ' if the dates are ' + test.gt_lt + ' ' + test.duration + ' apart', function () {
+				LogRotator.last_date_str = test.date;
+				LogRotator.hasStreamExpired().should.be[test.assertion]();
+			});
 		});
 	});
 
 	context('#getFileName()', function () {
 		var tests = [
 			{ flow: null, name: 'null' },
-			{ flow: '2015-01-01-01:01', name: 'expired' },
-			{ flow: moment().format('YYYY-MM-DD-hh:mm'), name: 'current' }
+			{ flow: '20150101', name: 'expired' },
+			{ flow: moment().format(dateFmt), name: 'current' }
 		];
 
 		tests.forEach(function (test) {
