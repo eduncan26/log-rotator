@@ -26,7 +26,11 @@ var app = require('express')(),
     logRotator = require('log-rotator');
 
 
-var logStream = logRotator.stream({ directory: './foo' });
+var logStream = logRotator.stream({
+	directory: './foo',
+	ttl: '1d',
+	file_extension: 'log'
+});
 
 app.use(morgan('combined', { stream: logStream }));
 ```
@@ -58,7 +62,7 @@ logRotator.directory = './foo/bar';
 Set the default file_name. Defaults to null
 
 ```javascript
-// write files to foo2016-01-01-15:15.log
+// write files to foo20160101.log
 logRotator.file_name = 'foo';
 ``` 
 
@@ -66,7 +70,7 @@ logRotator.file_name = 'foo';
 Set the default file_extension. Defaults to 'log'
 
 ```javascript
-// write files to 2016-01-01-15:15.node_log
+// write files to 20160101.node_log
 logRotator.file_extension = 'node_log';
 ```
 
