@@ -1,3 +1,6 @@
+1.2.0
+  * Fix issue where file prefix is not being applied if file_name exists
+
 1.1.0
   * Fix GH-4
   * Configure travis to deploy builds
