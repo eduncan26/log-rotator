@@ -129,16 +129,21 @@ describe('Log Rotator', function () {
 	});
 
 	context('#getFileName()', function () {
+		var today = moment().format(dateFmt);
+		var fileName = today + '.log';
 		var tests = [
-			{ flow: null, name: 'null' },
-			{ flow: '20150101', name: 'expired' },
-			{ flow: moment().format(dateFmt), name: 'current' }
+			{ when: '', prop: 'last_date_str', flow: null, assertion: 'is null', output: fileName },
+			{ when: '', prop: 'last_date_str', flow: '20150101', assertion: 'is expired', output: fileName},
+			{ when: '', prop: 'last_date_str', flow: today, assertion: 'is current', output: fileName},
+			{ when: 'prefixed with file_name', prop: 'file_name', flow: 'node-', assertion: 'exists', output: 'node-' + fileName },
+			{ when: 'not prefixed', prop: 'file_name', flow: '', assertion: 'is empty', output: fileName }
 		];
 
-		tests.forEach(function (test) {
-			it('should return a file name when last_date_str is ' + test.name, function () {
-				LogRotator.last_date_str = test.flow;
+		tests.forEach(function (test) {			
+			it('should return a file name ' + test.when + ' when LogRotator.' + test.prop + ' ' + test.assertion, function () {
+				LogRotator[test.prop] = test.flow;
 				LogRotator.getFileName().should.be.ok();
+				LogRotator.getFileName().should.equal(test.output);
 			});
 		});
 	});
