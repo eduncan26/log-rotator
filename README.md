@@ -1,4 +1,4 @@
-# log-rotator [![Build Status](https://travis-ci.org/eduncan26/log-rotator.svg?branch=master)](https://travis-ci.org/eduncan26/log-rotator)
+# log-rotator [![Build Status](https://travis-ci.org/evan-duncan/log-rotator.svg?branch=master)](https://travis-ci.org/eduncan26/log-rotator)
 
 
 ## Getting Started
